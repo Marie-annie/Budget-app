@@ -1,6 +1,6 @@
 const API_BASE_URL = 'http://localhost:3000';
 
-export async function registerUser(user: { username: string; email: string; password: string }) {
+export async function registerUser(user: { username: string; email: string; passwordHash: string; role: string  }) {
   const response = await fetch(`${API_BASE_URL}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -21,13 +21,23 @@ export async function loginUser(credentials: { email: string; password: string }
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
+
+    const data = await response.json();
   
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Failed to login');
     }
   
-    return response.json(); // This should return the JWT token
+    return {access_token: data.access_token, role: data.role}; // This should return the JWT token
+}
+
+export async function fetchUsers() {
+  const response = await fetch(`${API_BASE_URL}/users`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch users');
+  }
+  return response.json();
 }
 
 

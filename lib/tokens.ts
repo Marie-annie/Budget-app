@@ -16,3 +16,16 @@ export function clearToken(): void {
       localStorage.removeItem('jwt');
   }
 }
+
+export function setUserRole(role: string): void {
+  if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('userRole', role);
+  }
+}
+
+export function getUserRole(): string | null {
+  if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('userRole');
+  }
+  return null;
+}
