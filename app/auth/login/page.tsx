@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { loginUser } from '@/lib/api';
-import { setToken } from '@/lib/tokens';
+import { setToken, setUserRole} from '@/lib/tokens';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,8 +15,9 @@ export default function LoginPage() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     try {
-      const { access_token } = await loginUser(form);
+      const { access_token, role } = await loginUser(form);
       setToken(access_token);
+      setUserRole(role);
       router.push('/dashboard');
     } catch (err: any) {
       setError(err.message);
