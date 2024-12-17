@@ -29,23 +29,18 @@ export default function DashboardPage() {
           throw new Error('Not authenticated');
         }
 
-        // Fetch dashboard summary using the token
         const data = await fetchDashboardSummary(token);
-        
-        // If no data, default values will be shown
         setSummary(data || { income: 0, expenses: 0, savings: 0 });
 
       } catch (error: any) {
-        // Log error and set error state
         console.error('Error loading dashboard summary:', error);
         setError(error.message);
         
-        // Redirect to login if not authenticated
         if (error.message === 'Not authenticated') {
           router.push('/login');
         }
       } finally {
-        setLoading(false); // Stop loading regardless of success or failure
+        setLoading(false); 
       }
     }
 
@@ -67,19 +62,19 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2">
         <Card className="bg-green-100 p-4 rounded shadow">
           <p className="font-semibold">Total Income</p>
-          <p className="text-green-500">${summary.income}</p>
+          <p className="text-green-500">{summary.income}TZS</p>
         </Card>
         <Card className="bg-red-100 p-4 rounded shadow">
           <p className="font-semibold">Total Expenses</p>
-          <p className="text-red-500">${summary.expenses}</p>
+          <p className="text-red-500">{summary.expenses}TZS</p>
         </Card>
         <Card className="bg-blue-100 p-4 rounded shadow">
           <p className="font-semibold">Total Savings</p>
-          <p className="text-blue-500">${summary.savings}</p>
+          <p className="text-blue-500">{summary.savings}TZS</p>
         </Card>
         <Card className="bg-yellow-100 p-4 rounded shadow">
           <p className="font-semibold">Net Income</p>
-          <p className="text-yellow-500">${summary.income - summary.expenses}</p>
+          <p className="text-yellow-500">{summary.income - summary.expenses}TZS</p>
         </Card>
       </div>
       <div className="flex flex-wrap -mx-2">
