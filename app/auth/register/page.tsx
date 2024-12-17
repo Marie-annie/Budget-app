@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ username: '', email: '', passwordHash: '' });
+  const [form, setForm] = useState({ username: '', email: '', passwordHash: '', role: 'user | admin' });
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -40,7 +40,8 @@ export default function RegisterPage() {
         onChange={(e) => setForm({ ...form, email: e.target.value })}
         required
         className="w-full mb-4 px-4 py-2 border rounded"
-      />
+      />  
+
       <Input
         type="password"
         placeholder="Password"
