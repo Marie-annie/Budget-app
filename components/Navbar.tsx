@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getToken, clearToken } from '@/lib/tokens';
+import { getToken, clearToken, getUserRole } from '@/lib/tokens';
 
 export default function Navbar() {
   const router = useRouter();
   const isLoggedIn = !!getToken();
+  const userRole = getUserRole();
+  
 
   function handleLogout() {
     clearToken();
@@ -25,6 +27,9 @@ export default function Navbar() {
               <li><Link href="/dashboard">Dashboard</Link></li>
               <li><Link href="/transactions">Transactions</Link></li>
               <li><Link href="/categories">Categories</Link></li>
+              {userRole === 'admin' && (
+                <li><Link href="/user-management">User Management</Link></li>
+              )}
               <li><button onClick={handleLogout} className="text-red-500">Logout</button></li>
             </>
           ) : (
