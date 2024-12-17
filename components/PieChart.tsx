@@ -10,6 +10,11 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
+interface PieChartData {
+    category: string
+    percentage: number
+}
+
 const chartConfig = {
     categories: {
         label: "Categories",
