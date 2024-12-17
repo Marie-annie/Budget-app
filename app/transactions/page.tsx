@@ -5,19 +5,30 @@ import { fetchTransactions, fetchCategories } from '@/lib/api';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
+import Navbar from '@/components/Navbar';
 
 interface Transaction {
-  id: number;
-  type: 'income' | 'expense';
-  amount: number;
-  categoryId: number | null;
-  categoryName: string | null;
-  createdAt: string;
+  id:        number;
+  type:      string;
+  amount:    number;
+  createdAt: Date;
+  user:      User;
+  category:  Category;
+}
+ 
+interface Category {
+  id:        number;
+  name:      string;
+  createdAt: Date;
 }
 
-interface Category {
-  id: number;
-  name: string;
+interface User {
+  id:           number;
+  username:     string;
+  email:        string;
+  passwordHash: string;
+  role:         string;
+  createdAt:    Date;
 }
 
 export default function TransactionsPage() {
@@ -36,17 +47,7 @@ export default function TransactionsPage() {
       }
     }
 
-    async function loadCategories() {
-      try {
-        const data = await fetchCategories();
-        setCategories(data);
-      } catch (err) {
-        setError('Failed to load categories');
-      }
-    }
-
     loadTransactions();
-    loadCategories();
   }, []);
 
   if (error) {
@@ -57,13 +58,10 @@ export default function TransactionsPage() {
     return <div>No transactions found</div>;
   }
 
-  const getCategoryName = (categoryId: number | null) => {
-    if (!categoryId) return 'N/A';
-    const category = categories.find((c) => c.id === categoryId);
-    return category ? category.name : 'N/A';
-  };
 
   return (
+    <div className=''>
+      <Navbar/>
     <div className="max-w-5xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-4">Transactions</h1>
       <div className="flex justify-end mx-2 mb-4">
@@ -92,13 +90,14 @@ export default function TransactionsPage() {
             <tr key={transaction.id} className="text-center">
               <td className="border p-2">{index + 1}</td>
               <td className="border p-2">{transaction.type}</td>
-              <td className="border p-2">${transaction.amount.toFixed(2)}</td>
-              <td className="border p-2">{getCategoryName(transaction.categoryId)}</td>
+              <td className="border p-2">{transaction.amount.toFixed(2)}</td>
+              <td className="border p-2">{transaction.category?.name}</td>
               <td className="border p-2">{new Date(transaction.createdAt).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }
