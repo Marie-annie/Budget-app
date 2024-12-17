@@ -40,6 +40,7 @@ export function BarChartComponent() {
                     income: item.income,
                     expense: item.expense,
                 }));
+                console.log(transformedData);
                 setChartData(transformedData);
                 setLoading(false);  
             } catch (error) {
