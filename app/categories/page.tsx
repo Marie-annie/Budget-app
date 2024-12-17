@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import { fetchCategories } from '@/lib/api';
 import Link from 'next/link';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@/components/ui/table';
-import { PlusCircle, PlusIcon } from 'lucide-react';
+import { PlusCircle, TrashIcon } from 'lucide-react';
 
 export default function CategoriesPage() {
     useAuth();
@@ -18,6 +17,7 @@ export default function CategoriesPage() {
         async function loadCategories() {
             try {
                 const data = await fetchCategories();
+                console.log(data);
                 setCategories(data);
             } catch (err: any) {
                 console.error('Failed to fetch categories:', err.message);
@@ -39,8 +39,8 @@ export default function CategoriesPage() {
     return (
         <div className="">
             <Navbar />
-            <div className="p-8">
-                <h2 className="font-bold text-left">Categories List</h2>
+            <div className="max-w-5xl mx-auto p-8">
+                <h1 className="font-bold text-2xl mb-4">Categories List</h1>
                 <div className="flex justify-end p-5 mx-2">
                     <Link href="/categories/add">
                         <Button className="text-white bg-blue-400">
@@ -50,30 +50,31 @@ export default function CategoriesPage() {
                     </Link>
                 </div>
     
-                <div className="bg-white shadow-md rounded p-4">
-                    <Table className="w-full border-collapse">
+                
+                    <table className="w-full border-collapse">
                         <thead>
-                            <tr className="border-b-2 border-gray-300">
-                                <th className="text-center">S/N</th>
-                                <th className="text-center">Name</th>
-                                <th className="text-center">Actions</th>
+                            <tr className="bg-gray-100">
+                                <th className="border p-2">S/N</th>
+                                <th className="border p-2">Name</th>
+                                <th className="border p-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {categories.map((category, index) => (
-                                <tr key={category.id} className="border-b">
-                                    <td className="text-center">{index + 1}</td>
-                                    <td className="text-center">{category.name}</td>
-                                    <td className="text-center">
-                                        <Link href={`/categories/${category.id}`}>
-                                            <Button className="text-white bg-blue-400">View</Button>
-                                        </Link>
+                                <tr key={category.id} className="text-center">
+                                    <td className="border p-2">{index + 1}</td>
+                                    <td className="border p-2">{category.name}</td>
+                                    <td className="border p-2">
+                                        <Button className="text-white bg-blue-400">
+                                            <TrashIcon size={16} className="mr-2" />
+                                            Delete
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
-                    </Table>
-                </div>
+                    </table>
+                 
             </div>
         </div>
     );

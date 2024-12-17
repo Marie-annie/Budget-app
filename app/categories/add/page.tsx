@@ -42,10 +42,12 @@ export default function AddPage() {
     };
 
     return (
-        <div className="p-8">
-            <h1 className='font-bold text-xl'>Add Category</h1>
-            <div className="bg-white shadow-md rounded p-8 w-[700px] mx-auto">
-                <form onSubmit={handleSubmit}>
+        <div className="max-w-xl mx-auto p-8">
+            <h1 className='font-bold text-2xl mb-4'>Add Category</h1>
+
+                {error && <div className="text-red-500">{error}</div>}
+
+                <form onSubmit={handleSubmit} className='space-y-4'>
                     <div className="mb-4">
                         <Label htmlFor="name">Name</Label>
                         <Input
@@ -54,6 +56,7 @@ export default function AddPage() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-[350px]"
+                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -73,23 +76,21 @@ export default function AddPage() {
                             </SelectContent>
                         </Select>
                     </div>
-                    {error && <div className="text-red-500">{error}</div>}
-                    
+                   
                     <div className="flex justify-between mt-11">
                         <Link href="/categories" className="text-blue-400">
                             <Button className="bg-blue-400 text-white">
                                 <ArrowBigLeft size={16} className="mr-2" />
-                                Back to Categories
+                                Back 
                             </Button>
                         </Link>
     
                         <Button type="submit" className="bg-blue-400 text-white">
                             <PlusCircle size={16} className="mr-2" />
-                            Create Category
+                            Save
                         </Button>
                     </div>
                 </form>
-            </div>
         </div>
     );
 }
