@@ -3,7 +3,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Trash2Icon } from 'lucide-react';
+import { Download, PlusCircle, Trash2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { fetchUsers } from '@/lib/api';
 import { useEffect, useState } from 'react';
@@ -50,7 +50,7 @@ export default function UserManagementPage() {
         <h1 className='text-2xl font-bold mb-4'>Users</h1>
         <div className='flex justify-end mb-4'>
             <Button>
-              <PlusCircle className='w-6 h-6 mr-2' />
+              <Download className='w-6 h-6 mr-2' />
               Export
             </Button>
           </div>
