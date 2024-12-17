@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchTransactions, fetchCategories } from '@/lib/api';
+import { fetchTransactions } from '@/lib/api';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
