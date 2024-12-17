@@ -126,7 +126,6 @@ export async function createTransaction(transaction: {
   type: string;
   amount: number;
   categoryId?: number;
-  categoryName?: string;
   userId: number;
 }) {
   const response = await fetch(`${API_BASE_URL}/transactions`, {
