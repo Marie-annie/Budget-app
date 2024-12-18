@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
-import { fetchCategories } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getToken } from '@/lib/tokens';
@@ -36,7 +35,7 @@ export default function AddPage() {
                 type: ''
             });
             router.push('/categories'); // Redirect to the category list
-        } catch (err) {
+        } catch (error) {
             setError('Failed to create category');
         }
     };

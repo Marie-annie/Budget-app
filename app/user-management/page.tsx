@@ -3,8 +3,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
-import { Download, PlusCircle, Trash2Icon } from 'lucide-react';
-import Link from 'next/link';
+import { Download, Trash2Icon } from 'lucide-react';
 import { fetchUsers } from '@/lib/api';
 import { useEffect, useState } from 'react';
 
@@ -27,7 +26,7 @@ export default function UserManagementPage() {
                 const data = await fetchUsers();
                 console.log(data);
                 setUsers(data);
-            } catch (err) {
+            } catch (error) {
                 setError('Failed to load users');
             }
         }

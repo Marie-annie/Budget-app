@@ -21,18 +21,17 @@ export default function NewPage() {
     const [amount, setAmount] = useState<number>(0);
     const [type, setType] = useState<'income' | 'expense'>('income');
     const [categoryId, setCategoryId] = useState<number | null>(null);
-    const [categories, setCategories] = useState<Category[]>([]); // Typed categories array
+    const [categories, setCategories] = useState<Category[]>([]); 
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const userId = useAuth();
 
-    // Fetch categories for the transaction form
     useEffect(() => {
         async function loadCategories() {
             try {
                 const data = await fetchCategories();
-                setCategories(data); // Expecting data to match Category[]
-            } catch (err) {
+                setCategories(data); 
+            } catch (error) {
                 setError('Failed to load categories');
             }
         }
@@ -55,12 +54,12 @@ export default function NewPage() {
                 amount,
                 type,
                 categoryId: categoryId !== null ? categoryId : undefined,
-                categoryName: categories.find((c) => c.id === categoryId)?.name, // Add category name
+                categoryName: categories.find((c) => c.id === categoryId)?.name, 
             };
             await createTransaction(newTransaction);
             console.log('Transaction created:', newTransaction);
-            router.push('/transactions'); // Redirect to the transaction list
-        } catch (err) {
+            router.push('/transactions'); 
+        } catch (error) {
             setError('Failed to create transaction');
         }
     };

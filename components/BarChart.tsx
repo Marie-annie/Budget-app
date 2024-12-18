@@ -6,8 +6,9 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "rec
 import { fetchDashboardBarChart } from "@/lib/api"
 import { useAuth } from "@/lib/useAuth"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card"
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent,} from "@/components/ui/chart"
+import { ChartConfig, ChartContainer} from "@/components/ui/chart"
 import { useState, useEffect } from "react"
+
 
 const chartConfig = {
   income: {
@@ -25,6 +26,7 @@ export function BarChartComponent() {
 
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function loadChartData(){
@@ -43,12 +45,16 @@ export function BarChartComponent() {
                 setChartData(transformedData);
                 setLoading(false);  
             } catch (error) {
-                console.error('Error loading bar chart data:', error);
+               setError('Failed to load chart data');
                 setLoading(false);
             }
         }
         loadChartData();
     })
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
  
     if (loading) {
         return <div>Loading...</div>;

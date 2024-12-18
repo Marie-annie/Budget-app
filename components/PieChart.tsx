@@ -1,19 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { TrendingUp } from "lucide-react"
 import { getToken } from "@/lib/tokens"
-import { CartesianGrid, Label, Pie, PieChart, Legend, Cell } from "recharts"
+import { Label, Pie, PieChart, Legend, Cell } from "recharts"
 import { fetchDashboardPieChart } from "@/lib/api"
 import { useAuth } from "@/lib/useAuth"
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-
-interface PieChartData {
-    category: string
-    percentage: number
-}
 
 const chartConfig = {
     categories: {
@@ -28,6 +22,7 @@ export function PieChartComponent() {
 
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function loadChartData() {
@@ -45,12 +40,16 @@ export function PieChartComponent() {
                 setChartData(transformedData);
                 setLoading(false);
             } catch (error) {
-                console.error('Error loading pie chart data:', error);
+                setError('Failed to load chart data');
                 setLoading(false);
             }
         }
         loadChartData();
     })
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
 
     if (loading) {
         return <div>Loading...</div>;

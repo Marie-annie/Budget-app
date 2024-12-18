@@ -1,14 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { getToken, clearToken, getUserRole } from '@/lib/tokens';
+import Profile from '@/components/Profile';
+
 
 export default function Navbar() {
   const router = useRouter();
   const isLoggedIn = !!getToken();
   const userRole = getUserRole();
-  
+
 
   function handleLogout() {
     clearToken();
@@ -30,6 +33,9 @@ export default function Navbar() {
               {userRole === 'admin' && (
                 <li><Link href="/user-management">User Management</Link></li>
               )}
+              <li>
+                <Profile />
+              </li>
               <li><button onClick={handleLogout} className="text-red-500">Logout</button></li>
             </>
           ) : (
