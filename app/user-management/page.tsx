@@ -26,7 +26,7 @@ export default function UserManagementPage() {
                 const data = await fetchUsers();
                 console.log(data);
                 setUsers(data);
-            } catch (error) {
+            } catch {
                 setError('Failed to load users');
             }
         }

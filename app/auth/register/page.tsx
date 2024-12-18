@@ -16,7 +16,7 @@ export default function RegisterPage() {
     try {
       await registerUser(form);
       router.push('/auth/login');
-    } catch (error) {
+    } catch{
       setError('Failed to register');
     }
   }

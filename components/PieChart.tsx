@@ -33,13 +33,13 @@ export function PieChartComponent() {
                 }
 
                 const pieChartData = await fetchDashboardPieChart(token);
-                const transformedData = pieChartData.map((item: any) => ({
+                const transformedData = pieChartData.map((item: { category: string; percentage: number }) => ({
                     category: item.category,
                     percentage: item.percentage,
                 }));
                 setChartData(transformedData);
                 setLoading(false);
-            } catch (error) {
+            } catch {
                 setError('Failed to load chart data');
                 setLoading(false);
             }

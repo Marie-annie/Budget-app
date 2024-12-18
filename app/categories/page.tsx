@@ -8,19 +8,22 @@ import { fetchCategories } from '@/lib/api';
 import Link from 'next/link';
 import { PlusCircle, TrashIcon } from 'lucide-react';
 
+interface Category {
+    id: number;
+    name: string;
+}
+
 export default function CategoriesPage() {
     useAuth();
-    const [categories, setCategories] = useState<any[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function loadCategories() {
             try {
                 const data = await fetchCategories();
-                console.log(data);
                 setCategories(data);
-            } catch (err: any) {
-                console.error('Failed to fetch categories:', err.message);
+            } catch {
                 setError('Unable to load categories. Please try again later.');
             }
         }

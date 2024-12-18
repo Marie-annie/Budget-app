@@ -35,7 +35,7 @@ export default function AddPage() {
                 type: ''
             });
             router.push('/categories'); // Redirect to the category list
-        } catch (error) {
+        } catch {
             setError('Failed to create category');
         }
     };

@@ -19,7 +19,7 @@ export default function LoginPage() {
       setToken(access_token);
       setUserRole(role);
       router.push('/dashboard');
-    } catch (error) {
+    } catch {
       setError('Failed to login');
     }
   }

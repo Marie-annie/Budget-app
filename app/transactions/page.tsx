@@ -50,17 +50,17 @@ export default function TransactionsPage() {
 
         const data = await fetchTransactions(token);
         setTransactions(data || []);
-      } catch (error: any) {
+      } catch {
         setError('Failed to load transactions');
 
-        if (error.message === 'Not authenticated') {
+        if (error === 'Not authenticated') {
           router.push('/login');
         }
       }
     }
 
     loadTransactions();
-  }, [router]);
+  }, [router, error]);
 
   if (error) {
     return <div className="text-red-500">{error}</div>;

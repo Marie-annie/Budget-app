@@ -17,37 +17,45 @@ export default function Profile () {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (userId) {
-            fetchUserById(userId)
-            .then((data) => {
-                setUsername(data.username);
-                setEmail(data.email);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-        }
-    } , [userId]);
+        const loadUserData = async () => {
+            if (userId) {
+                try {
+                    const data = await fetchUserById(userId);
+                    setUsername(data.username);
+                    setEmail(data.email);
+                } catch {
+                    setError("Failed to load user data");
+                }
+            }
+        };
+
+        loadUserData();
+    }, [userId]);
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
 
     const handleProfileClick = () => {
-      setIsProfileDialogOpen(true);
+        setIsProfileDialogOpen(true);
     }
   
     const handleCloseProfileDialog = () => {
       setIsProfileDialogOpen(false);
     }
 
-    const handleSaveProfile = () => {
-        updateUser(userId, { username, email })
-        .then(() => {
+    const handleSaveProfile = async () => {
+        try {
+            await updateUser(userId, { username, email });
             handleCloseProfileDialog();
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-    }
+        } catch {
+            setError("Failed to save profile");
+        }
+    };
+    
     return (
         <div className='profile'> 
             <Dialog open={isProfileDialogOpen} onOpenChange={setIsProfileDialogOpen}>
@@ -58,7 +66,7 @@ export default function Profile () {
                     <DialogHeader>
                         <DialogTitle>Edit profile</DialogTitle>
                         <DialogDescription>
-                            Make changes to your profile here. Click save when you're done.
+                            Make changes to your profile here.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">

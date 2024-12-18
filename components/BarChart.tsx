@@ -37,14 +37,14 @@ export function BarChartComponent() {
                 }
 
                 const barChartData = await fetchDashboardBarChart(token);
-                const transformedData = barChartData.map((item: any) => ({
+                const transformedData = barChartData.map((item: { month: Date; income: number; expense: number}) => ({
                     month: item.month.toLocaleString("default", { month: "long" }),
                     income: item.income,
                     expense: item.expense,
                 }));
                 setChartData(transformedData);
                 setLoading(false);  
-            } catch (error) {
+            } catch {
                setError('Failed to load chart data');
                 setLoading(false);
             }

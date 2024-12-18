@@ -29,7 +29,7 @@ export default function DashboardPage() {
         const data = await fetchDashboardSummary(token);
         setSummary(data || { income: 0, expenses: 0, savings: 0 });
 
-      } catch (error) {
+      } catch {
         setError('Failed to load summary');
         
         if (error === 'Not authenticated') {
@@ -41,7 +41,7 @@ export default function DashboardPage() {
     }
 
     loadSummary();
-  }, [router]);
+  }, [router, error]);
 
   if (loading) {
     return <div>Loading...</div>; 

@@ -31,7 +31,7 @@ export default function NewPage() {
             try {
                 const data = await fetchCategories();
                 setCategories(data); 
-            } catch (error) {
+            } catch {
                 setError('Failed to load categories');
             }
         }
@@ -59,10 +59,14 @@ export default function NewPage() {
             await createTransaction(newTransaction);
             console.log('Transaction created:', newTransaction);
             router.push('/transactions'); 
-        } catch (error) {
+        } catch {
             setError('Failed to create transaction');
         }
     };
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
 
     return (
         <div className="max-w-xl mx-auto p-8">
