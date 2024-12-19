@@ -49,17 +49,12 @@ export default function NewPage() {
         }
 
         try {
-            const newTransaction = {
-                userId,
-                amount,
-                type,
-                categoryId: categoryId !== null ? categoryId : undefined,
-                categoryName: categories.find((c) => c.id === categoryId)?.name, 
-            };
-            await createTransaction(newTransaction);
-            console.log('Transaction created:', newTransaction);
-            router.push('/transactions'); 
-        } catch {
+            await createTransaction(
+                { type, amount, categoryId: categoryId !== null ? categoryId : undefined, userId },
+                token
+            );
+            router.push('/transactions');
+        } catch (error) {
             setError('Failed to create transaction');
         }
     };

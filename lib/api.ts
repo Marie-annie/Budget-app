@@ -198,10 +198,11 @@ export async function createTransaction(transaction: {
   amount: number;
   categoryId?: number;
   userId: number;
-}) {
+}, token: string) {
   const response = await fetch(`${API_BASE_URL}/transactions`, {
     method: 'POST',
     headers: {
+      'Authorization': `Bearer ${token}`,  // Include the token correctly
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(transaction),
