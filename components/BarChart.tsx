@@ -9,22 +9,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/com
 import { ChartConfig, ChartContainer} from "@/components/ui/chart"
 import { useState, useEffect } from "react"
 
+interface ChartData {
+  date: string;
+  income: number;
+  expense: number;
+  transactions:[];
+}
+
 
 const chartConfig = {
   income: {
     label: "Income",
-    color: "hsl(var(--chart-1))",
+    color: "#0088FE", 
   },
   expense: {
     label: "Expense",
-    color: "hsl(var(--chart-2))",
+    color: "#00C49F",
   },
 } satisfies ChartConfig
 
 export function BarChartComponent() {
     useAuth()
 
-    const [chartData, setChartData] = useState([]);
+    const [chartData, setChartData] = useState<ChartData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -37,10 +44,11 @@ export function BarChartComponent() {
                 }
 
                 const barChartData = await fetchDashboardBarChart(token);
-                const transformedData = barChartData.map((item: { month: Date; income: number; expense: number}) => ({
-                    month: item.month.toLocaleString("default", { month: "long" }),
+                const transformedData = barChartData.map((item: { date: string; income: number; expense: number; transactions:[]}) => ({
+                    date: new Date(item.date).toLocaleDateString('en-GB', {weekday: 'long'}),
                     income: item.income,
                     expense: item.expense,
+                    transactions: item.transactions,
                 }));
                 setChartData(transformedData);
                 setLoading(false);  
@@ -63,14 +71,14 @@ export function BarChartComponent() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Annual budget</CardTitle>
-        <CardDescription>Yearly Income and Expense</CardDescription>
+        <CardTitle>Weekly Scores</CardTitle>
+        <CardDescription>Weekly Income and Expense</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart data={chartData}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="month" />
+            <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
             <Legend />

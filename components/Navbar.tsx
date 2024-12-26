@@ -13,9 +13,9 @@ export default function Navbar() {
   const userRole = getUserRole();
 
 
-  function handleLogout() {
+  const handleLogout = () => {
     clearToken();
-    router.push('/');
+    router.push('/auth/login');
   }
 
   return (

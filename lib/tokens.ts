@@ -23,6 +23,13 @@ export function setUserRole(role: string): void {
   }
 }
 
+export function getUserId(): number | null {
+  if (typeof localStorage !== 'undefined') {
+      return parseInt(localStorage.getItem('userId') || '0');
+  }
+  return null;
+}
+
 export function getUserRole(): string | null {
   if (typeof localStorage !== 'undefined') {
       return localStorage.getItem('userRole');

@@ -4,7 +4,6 @@ import { jwtDecode } from 'jwt-decode';
 
 interface DecodedToken {
   userId: number;
-  // Add other fields as needed
 }
 
 export function useAuth() {
@@ -19,6 +18,7 @@ export function useAuth() {
       try {
         const decoded: DecodedToken = jwtDecode(token);
         setUserId(decoded.userId);
+        localStorage.setItem('userId', decoded.userId.toString());
       } catch (error) {
         console.error('Invalid token:', error);
         router.push('/auth/login'); // Redirect to login if token is invalid

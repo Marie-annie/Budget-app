@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchTransactions } from '@/lib/api';
+import { fetchUserTransactions } from '@/lib/api';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
@@ -9,29 +9,30 @@ import Navbar from '@/components/Navbar';
 import { useAuth } from '@/lib/useAuth';
 import { useRouter } from 'next/navigation';
 import { getToken } from '@/lib/tokens';
+import { getUserId } from '@/lib/tokens';
 
 interface Transaction {
-  id:        number;
-  type:      string;
-  amount:    number;
+  id: number;
+  type: string;
+  amount: number;
   createdAt: Date;
-  user:      User;
-  category:  Category;
+  user: User;
+  category: Category;
 }
- 
+
 interface Category {
-  id:        number;
-  name:      string;
+  id: number;
+  name: string;
   createdAt: Date;
 }
 
 interface User {
-  id:           number;
-  username:     string;
-  email:        string;
+  id: number;
+  username: string;
+  email: string;
   passwordHash: string;
-  role:         string;
-  createdAt:    Date;
+  role: string;
+  createdAt: Date;
 }
 
 export default function TransactionsPage() {
@@ -41,18 +42,25 @@ export default function TransactionsPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+
     async function loadTransactions() {
       try {
         const token = getToken();
+        const userId = getUserId();
+
         if (!token) {
           throw new Error('Not authenticated');
         }
 
-        const data = await fetchTransactions(token);
+        if (userId === null) {
+          throw new Error('User ID is null');
+        }
+        const data = await fetchUserTransactions(token, userId);
+        console.log(data);
         setTransactions(data || []);
+
       } catch {
         setError('Failed to load transactions');
-
         if (error === 'Not authenticated') {
           router.push('/login');
         }
@@ -60,19 +68,17 @@ export default function TransactionsPage() {
     }
 
     loadTransactions();
-  }, [router, error]);
+  }, [router]);
+
 
   if (error) {
     return <div className="text-red-500">{error}</div>;
   }
 
-  if (transactions.length === 0) {
-    return <div>No transactions found</div>;
-  }
 
   return (
-    <div className=''>
-      <Navbar/>
+    <div className=" ">
+      <Navbar />
       <div className="max-w-5xl mx-auto p-8">
         <h1 className="text-2xl font-bold mb-4">Transactions</h1>
         <div className="flex justify-end mx-2 mb-4">
@@ -95,15 +101,23 @@ export default function TransactionsPage() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction, index) => (
-              <tr key={transaction.id} className="text-center">
-                <td className="border p-2">{index + 1}</td>
-                <td className="border p-2">{transaction.type}</td>
-                <td className="border p-2">{transaction.amount.toFixed(2)}</td>
-                <td className="border p-2">{transaction.category?.name}</td>
-                <td className="border p-2">{new Date(transaction.createdAt).toLocaleString()}</td>
+            {transactions.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center p-4">
+                  No transactions found
+                </td>
               </tr>
-            ))}
+            ) : (
+              transactions.map((transaction, index) => (
+                <tr key={transaction.id} className="text-center">
+                  <td className="border p-2">{index + 1}</td>
+                  <td className="border p-2">{transaction.type}</td>
+                  <td className="border p-2">{transaction.amount.toFixed(2)}</td>
+                  <td className="border p-2">{transaction.category?.name}</td>
+                  <td className="border p-2">{new Date(transaction.createdAt).toLocaleString()}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -9,6 +9,11 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
+interface ChartData {
+    category: string;
+    percentage: number;
+}
+
 const chartConfig = {
     categories: {
         label: "Categories",
@@ -20,7 +25,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF4560'
 export function PieChartComponent() {
     useAuth()
 
-    const [chartData, setChartData] = useState([]);
+    const [chartData, setChartData] = useState<ChartData[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

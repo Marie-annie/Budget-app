@@ -24,6 +24,13 @@ export async function loginUser(credentials: { email: string; password: string }
 
   const data = await response.json();
 
+  if (response.ok){
+    const { access_token, role } = data;
+    localStorage.setItem('jwt', access_token);
+    localStorage.setItem('userRole', role);
+    localStorage.setItem('userId', data.id);
+  }
+
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message || 'Failed to login');
@@ -49,15 +56,15 @@ export async function fetchUserById(id: number) {
 }
 
 export async function fetchUserByEmail(email: string) {
-  const response = await fetch(`${API_BASE_URL}/users/email/${email}`);
+  const response = await fetch(`${API_BASE_URL}/users/${email}`);
   if (!response.ok) {
     throw new Error('Failed to fetch user');
   }
   return response.json();
 }
 
-export async function fetchUserTransactions(token: string) {
-  const response = await fetch(`${API_BASE_URL}/transactions`, {
+export async function fetchUserTransactions(token: string, userId: number) {
+  const response = await fetch(`${API_BASE_URL}/transactions/${userId}`, {
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -129,7 +136,7 @@ export async function fetchDashboardSummary(token: string) {
 }
 
 export async function fetchDashboardBarChart(token: string) {
-  const response = await fetch(`${API_BASE_URL}/transactions/yearly-income-expense`, {
+  const response = await fetch(`${API_BASE_URL}/transactions/weekly-income-expense`, {
     headers: {
       'Authorization': `Bearer ${token}`, // Include the token correctly
       'Content-Type': 'application/json',
